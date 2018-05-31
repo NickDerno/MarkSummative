@@ -1,7 +1,7 @@
 /*
  * Nick Dernovsek
  * marksummative.java
- * This program 
+ * This program helps organize marks 
  */
 
 package MarkSummative;
@@ -12,8 +12,8 @@ import java.text.DecimalFormat;
  * @author nider6687
  */
 public class MarkSummative extends javax.swing.JFrame {
-    public int [] level = {0,0,0,0,0};
-    ArrayList <Integer> marks = new ArrayList();
+    public int [] level = {0,0,0,0,0};                  //array for grades
+    ArrayList <Integer> marks = new ArrayList();        //arraylist for marks
     /**
      * Creates new form MarkSummative
      */
@@ -149,12 +149,12 @@ public class MarkSummative extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 413, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 6, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 7, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,20 +173,20 @@ public class MarkSummative extends javax.swing.JFrame {
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         if (Integer.parseInt(markField.getText()) <= 100 && Integer.parseInt(markField.getText()) >= 0) {
             Collections.addAll(marks, Integer.parseInt(markField.getText()));
-            System.out.println(marks);
-            markField.setText(null);
+            System.out.println(marks);                                              
+            markField.setText(null);        //adding the marks to the array if it's <0 and > 100
             for (int x = 0; x < marks.size(); x++) {
                 invalidLabel.setText("Marks Added: " + marks.size());
-                sortArea.setText(null);
+                sortArea.setText(null);                              //double for loop so the textarea doesn't repeat marks
                 for (int i = 0; i < marks.size(); i++) {
                     marks.toString();
-                    sortArea.setText(sortArea.getText()+ marks.get(i) + "\n");
+                    sortArea.setText(sortArea.getText()+ marks.get(i) + "\n"); //showing each mark on a line
                 }
             }
         }
         else {
             invalidLabel.setText("Invalid Mark" + " (" + markField.getText() + ")");
-            markField.setText(null);
+            markField.setText(null);    //show invalid mark if the mark is > 100 < 0
         }
     }//GEN-LAST:event_addButtonActionPerformed
 
@@ -195,59 +195,79 @@ public class MarkSummative extends javax.swing.JFrame {
         for (int x = 0; x < marks.size(); x++) {
             invalidLabel.setText("Marks Added: " + marks.size());
             sortArea.setText(null);
-            for (int i = 0; i < marks.size(); i++) {
+            for (int i = 0; i < marks.size(); i++) {    //using a double for loop again except sorting it
                 marks.toString();
-                sortArea.setText(sortArea.getText()+ marks.get(i) + "\n");
+                sortArea.setText(sortArea.getText()+ marks.get(i) + "\n");  
             }
         }
     }//GEN-LAST:event_sortButtonActionPerformed
     public double average() {
         double sum = 0;
-        double denominator = marks.size();
+        double denominator = marks.size(); //setting the denominator to the size of the array to find average
         double product;
         
-        for(int i = 0; i < marks.size(); i++) {
-            sum += marks.get(i);
+        for(int i = 0; i < marks.size(); i++) {     
+            sum += marks.get(i);            //adding all the marks together using a for loop        
         }
         product = sum/denominator;
         return (product);
     }
     public double maximum() {
-        Collections.sort(marks);
+        Collections.sort(marks);    //sorting it to make sure the last element is the highest
         double maximum = 0;
         for(int i = 0; i < marks.size(); i++) {
-            maximum = marks.get(i);
+            maximum = marks.get(i);              //finding the last index in the arraylist
         } 
         return maximum;
     } 
     public double minimum() {
-        Collections.sort(marks);
+        Collections.sort(marks);        //sorting it again to make sure the last element is the highest
         double mimimum = marks.get(0);
-        return mimimum;
+        return mimimum;                 //finding the first index and setting it as the minimum
     }
-    public void level(){
-        for (int i = 0; i < marks.size(); i++) {
-            if (marks.get(i)>=80) {
-                level[4]++;
+    public void level() {
+        for (int x = 0; x < marks.size(); x++) {
+            level[0] = 0;
+            level[1] = 0;
+            level[2] = 0;
+            level[3] = 0;
+            level[4] = 0;
+            for (int i = 0; i < marks.size(); i++) {
+                if (marks.get(i)>=80) {              //using a double for loop so the marks dont multiply
+                    level[4]++;
+                }
+                else if (marks.get(i)>=70) {
+                    level[3]++;
+                }
+                else if (marks.get(i)>=60) {
+                    level[2]++;
+                }                               //finding which section the element is in using the if/else  
+                else if (marks.get(i)>=50) {    //statements then adding +1 to which level it's in
+                    level[1]++;
+                }
+                else {
+                    level[0]++;
+                }
             }
-            else if (marks.get(i)>=70) {
-                level[3]++;
-            }
-            else if (marks.get(i)>=60) {
-                level[2]++;
-            }
-            else if (marks.get(i)>=50) {
-                level[1]++;
-            }
-            else level[0]++;
         }
     }
+   
     private void analyzeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_analyzeButtonActionPerformed
-        int levelR = level[0];
-        System.out.println(levelR);
-        DecimalFormat x = new DecimalFormat("###.##");
+        level();
+        System.out.println(level[0]);
+        DecimalFormat x = new DecimalFormat("###.##");  //decimal formats so the average is only 2 decimals
         DecimalFormat i = new DecimalFormat("###");
-        analyzeArea.setText("Class Average: " + x.format(average()) + "%\nHighest Mark: " + i.format(maximum()) + "\nLowest Mark: " + i.format(minimum()) + "\nRange of Marks: " + i.format((maximum()-minimum())) + "\n" + level[1]);      
+        analyzeArea.setText(
+              "Class Average: " + x.format(average()) 
+            + "%\nHighest Mark: " + i.format(maximum()) 
+            + "\nLowest Mark: " + i.format(minimum()) 
+            + "\nRange of Marks: " + i.format((maximum()-minimum())) 
+            + "\n# of Marks at level R:     " + level[0]            
+            + "\n# of Marks at level 1:     " + level[1]         //setting the text area all the methods
+            + "\n# of Marks at level 2:     " + level[2]         //split it up because it was too long
+            + "\n# of Marks at level 3:     " + level[3]
+            + "\n# of Marks at level 4:     " + level[4]
+        );
     }//GEN-LAST:event_analyzeButtonActionPerformed
 
     /**
